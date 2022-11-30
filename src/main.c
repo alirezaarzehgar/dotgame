@@ -29,18 +29,15 @@ int main(int argc, char const *argv[])
         {
             /* print dots */
             for (int j = 0; j < mode; j++)
-            {
-                putchar('*');
-                /* -- or "  " */
-            }
+                printf("%d%s", matr[i][j],
+                        matr[i][j+1] != -1 ? "--" : "  ");
 
             /* print horizental lines */
+            putchar('\n');
             for (int i = 0; i < mode; i++)
             {
                 /* "   " or "|  " */
             }
-
-            putchar('\n');
         }
 
         /* get data */
