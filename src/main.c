@@ -60,8 +60,8 @@ int main(int argc, char const *argv[])
 
         /* input validation */
         if (!(direction == 0 || direction == 1)
-            || (row < 0 || row > mode)
-            || (col < 0 || col > mode))
+            || (row < 1 || row > mode)
+            || (col < 1 || col > mode))
         {
             fprintf(stderr, "\033[31mInvalid input. retry\033[0m\n");
             goto retry;
