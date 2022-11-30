@@ -12,10 +12,8 @@ static int mode = NORMAL_MODE;
 
 int main(int argc, char const *argv[])
 {
-    /* declaration */
-
     /* parse arguments */
-    if (argc == 2 && !strcmp("pro", argv[1], 4))
+    if (argc == 2 && !strncmp("pro", argv[1], 4))
         mode = PRO_MODE;
 
     /* initialization */
