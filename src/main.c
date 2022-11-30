@@ -57,7 +57,13 @@ int main(int argc, char const *argv[])
         }
         sscanf(line, "%d%d%d", &direction, &row, &col);
 
-        /* analyze */
+        /* input validation */
+
+        /* store player lines */
+
+        /* show score */
+
+        /* check for continue */
 
         /* next player */
         player = (player + 1) % NPLAYERS;
