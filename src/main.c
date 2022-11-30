@@ -24,10 +24,6 @@ int main(int argc, char const *argv[])
     /* start game */
     for (;;)
     {
-        int direction, row, col;
-        char *line = NULL;
-        size_t sline = 0;
-
         /* print matrix */
         for (int i = 0; i < mode; i++)
         {
@@ -48,6 +44,11 @@ int main(int argc, char const *argv[])
         }
 
         /* get data */
+    retry:
+        int direction, row, col;
+        char *line = NULL;
+        size_t sline = 0;
+
         printf("Player %c turn.Enter coordinates:\n", 'A' + player);
         getline(&line, &sline, stdin);
         if (feof(stdin))
@@ -58,6 +59,13 @@ int main(int argc, char const *argv[])
         sscanf(line, "%d%d%d", &direction, &row, &col);
 
         /* input validation */
+        if (!(direction == 0 || direction == 1)
+            || (row < 0 || row > mode)
+            || (col < 0 || col > mode))
+        {
+            fprintf(stderr, "\033[31mInvalid input. retry\033[0m\n");
+            goto retry;
+        }
 
         /* store player lines */
 
