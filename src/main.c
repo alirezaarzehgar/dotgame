@@ -6,12 +6,14 @@
 
 #define NORMAL_MODE 4
 #define PRO_MODE 6
-
-static int matr[PRO_MODE][PRO_MODE];
-static int mode = NORMAL_MODE;
+#define NPLAYERS 2
 
 int main(int argc, char const *argv[])
 {
+    /* declaration */
+    int player = 0, mode = NORMAL_MODE;
+    int matr[PRO_MODE][PRO_MODE];
+
     /* parse arguments */
     if (argc == 2 && !strncmp("pro", argv[1], 4))
         mode = PRO_MODE;
