@@ -24,6 +24,10 @@ int main(int argc, char const *argv[])
     /* start game */
     for (;;)
     {
+        int direction, row, col;
+        char *line = NULL;
+        size_t sline = 0;
+
         /* print matrix */
         for (int i = 0; i < mode; i++)
         {
@@ -44,6 +48,15 @@ int main(int argc, char const *argv[])
         }
 
         /* get data */
+        printf("Player %c turn.Enter coordinates:\n", 'A' + player);
+        getline(&line, &sline, stdin);
+        if (feof(stdin))
+        {
+            fprintf(stderr, "end game: stdin was closed\n");
+            _exit(EXIT_FAILURE);
+        }
+        sscanf(line, "%d%d%d", &direction, &row, &col);
+
         /* analyze */
     }
 
