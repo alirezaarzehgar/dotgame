@@ -19,7 +19,7 @@ int main(int argc, char const *argv[])
         mode = PRO_MODE;
 
     /* initialization */
-    memset(matr, 0, sizeof(matr));
+    memset(matr, -1, sizeof(matr));
 
     /* start game */
     for (;;)
