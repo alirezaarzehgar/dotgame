@@ -71,6 +71,7 @@ int main(int argc, char const *argv[])
         }
 
         /* store player lines */
+        *point = player;
 
         /* show score */
 
