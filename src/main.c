@@ -27,19 +27,15 @@ int find_square(int direc, int *row, int *col)
 
 int main(int argc, char const *argv[])
 {
-    /* declaration */
     int direc, row, col, player = 1, sumscore = 0,
         mode = NORMAL_MODE - 1, scores[NPLAYERS] = {0};
     char *line;
     size_t sline;
 
-    /* parse arguments */
     if (argc == 2 && !strncmp("pro", argv[1], 4))
         mode = PRO_MODE - 1;
 
-    /* start game */
     for (;;) {
-        /* print matrix */
         for (int i = 0; i <= mode; i++) {
             for (int j = 0; j <= mode; j++)
                 printf("*%s", matr[i][j][HOR] ? "--" : "  ");
@@ -51,12 +47,10 @@ int main(int argc, char const *argv[])
             putchar('\n');
         }
 
-    /* check for continue */
     if (sumscore == mode * mode)
         break;
 
     retry:
-        /* get data */
         line = NULL;
         printf("Player %c turn.Enter coordinates:\n", I2C(player));
         getline(&line, &sline, stdin);
@@ -64,7 +58,6 @@ int main(int argc, char const *argv[])
             return (0);
         sscanf(line, "%d%d%d", &direc, &row, &col);
 
-        /* input validation */
         row--, col--;
         if (!(direc == 0 || direc == 1)
             || (direc && row >= mode)
@@ -77,7 +70,6 @@ int main(int argc, char const *argv[])
         }
         matr[row][col][direc] = player;
 
-        /* show score */
         if (find_square(direc, &row, &col)) {
             matr[row][col][WIN] = player;
             scores[player-1]++;
@@ -85,7 +77,6 @@ int main(int argc, char const *argv[])
             continue;
         }
 
-        /* next player */
         if (++player > NPLAYERS)
             player = 1;
     }
