@@ -13,8 +13,10 @@
 int main(int argc, char const *argv[])
 {
     /* declaration */
-    int player = 1, mode = NORMAL_MODE;
-    int matr[PRO_MODE][PRO_MODE][2];
+    int direction, row, col, *point, player = 1,
+        mode = NORMAL_MODE, matr[PRO_MODE][PRO_MODE][2];
+    char *line;
+    size_t sline;
 
     /* parse arguments */
     if (argc == 2 && !strncmp("pro", argv[1], 4))
@@ -41,10 +43,6 @@ int main(int argc, char const *argv[])
         }
 
         /* get data */
-        int direction, row, col, *point;
-        char *line;
-        size_t sline = 0;
-
     retry:
         line = NULL;
         printf("Player %c turn.Enter coordinates:\n", 'A' + player - 1);
