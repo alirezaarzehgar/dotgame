@@ -47,10 +47,7 @@ int main(int argc, char const *argv[])
         printf("Player %c turn.Enter coordinates:\n", 'A' + player - 1);
         getline(&line, &sline, stdin);
         if (feof(stdin))
-        {
-            fprintf(stderr, "end game: stdin was closed\n");
-            _exit(EXIT_FAILURE);
-        }
+            _exit(EXIT_SUCCESS);
         sscanf(line, "%d%d%d", &direction, &row, &col);
 
         /* input validation */
