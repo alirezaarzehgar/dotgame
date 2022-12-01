@@ -1,7 +1,5 @@
 #include <stdio.h>
 #include <string.h>
-#include <stdlib.h>
-#include <unistd.h>
 
 #define NORMAL_MODE     4
 #define PRO_MODE        6
@@ -48,7 +46,7 @@ int main(int argc, char const *argv[])
         printf("Player %c turn.Enter coordinates:\n", 'A' + player - 1);
         getline(&line, &sline, stdin);
         if (feof(stdin))
-            _exit(EXIT_SUCCESS);
+            return (0);
         sscanf(line, "%d%d%d", &direc, &row, &col);
 
         /* input validation */
@@ -75,5 +73,5 @@ int main(int argc, char const *argv[])
 
     /* result */
 
-    return (EXIT_SUCCESS);
+    return (0);
 }
