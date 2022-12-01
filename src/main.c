@@ -2,7 +2,6 @@
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <stdbool.h>
 
 #define NORMAL_MODE     4
 #define PRO_MODE        6
@@ -14,7 +13,7 @@ int main(int argc, char const *argv[])
 {
     /* declaration */
     int direction, row, col, *point, player = 1,
-        mode = NORMAL_MODE, matr[PRO_MODE][PRO_MODE][2];
+        mode = NORMAL_MODE, matr[PRO_MODE+1][PRO_MODE+1][2];
     char *line;
     size_t sline;
 
@@ -42,8 +41,8 @@ int main(int argc, char const *argv[])
             putchar('\n');
         }
 
-        /* get data */
     retry:
+        /* get data */
         line = NULL;
         printf("Player %c turn.Enter coordinates:\n", 'A' + player - 1);
         getline(&line, &sline, stdin);
@@ -58,8 +57,9 @@ int main(int argc, char const *argv[])
         row--, col--;
         point = direction ? matr[row+1][col] : matr[row][col+1];
         if (!(direction == 0 || direction == 1)
-            || row < 0 || row > mode
-            || col < 0 || col > mode
+            || (direction && row >= mode - 1)
+            || (!direction && col >= mode - 1)
+            || row < 0 || col < 0
             || point[direction])
         {
             fprintf(stderr, "Invalid input. retry\n");
