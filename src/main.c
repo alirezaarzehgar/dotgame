@@ -9,25 +9,15 @@
 int matr[PRO_MODE+1][PRO_MODE][3] = {0};
 enum {HOR, VER, WIN};
 
-#define SQUARE_COND(row, col)   (matr[row][col][HOR] && matr[row][col][VER] \
-        && matr[row][col+1][VER] && matr[row+1][col][HOR])
-
-int find_square(int direc, int *row, int *col)
+int is_square(int row, int col)
 {
-    if (SQUARE_COND(*row, *col))
-        return 1;
-
-    if (direc)
-        if ((*col)-- > 0)
-            return SQUARE_COND(*row, *col);
-
-    if ((*row)-- > 0)
-        return SQUARE_COND(*row, *col);
+    return matr[row][col][HOR] && matr[row][col][VER]
+            && matr[row][col+1][VER] && matr[row+1][col][HOR];
 }
 
 int main(int argc, char const *argv[])
 {
-    int direc, row, col, player = 1, sumscore = 0,
+    int direc, row, col, player = 1, sumscore = 0, wins,
         mode = NORMAL_MODE - 1, scores[NPLAYERS] = {0};
     char *line;
     size_t sline;
@@ -51,6 +41,7 @@ int main(int argc, char const *argv[])
         break;
 
     retry:
+        wins = 0;
         line = NULL;
         printf("Player %c turn.Enter coordinates:\n", I2C(player));
         getline(&line, &sline, stdin);
@@ -70,14 +61,27 @@ int main(int argc, char const *argv[])
         }
         matr[row][col][direc] = player;
 
-        if (find_square(direc, &row, &col)) {
+        if (is_square(row, col)) {
             matr[row][col][WIN] = player;
-            scores[player-1]++;
-            sumscore++;
-            continue;
+            wins++;
         }
+        if (direc) {
+            if (col-- >= 0 && !matr[row][col][WIN]
+                && is_square(row, col)) {
+                matr[row][col][WIN] = player;
+                wins++;
+            }
+        } else {
+            if (row-- >= 0 && !matr[row][col][WIN]
+                && is_square(row, col)) {
+                matr[row][col][WIN] = player;
+                wins++;
+            }
+        }
+        scores[player-1] += wins;
+        sumscore += wins;
 
-        if (++player > NPLAYERS)
+        if (!wins && ++player > NPLAYERS)
             player = 1;
     }
 
