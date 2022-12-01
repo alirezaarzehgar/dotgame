@@ -4,14 +4,31 @@
 #define NORMAL_MODE     4
 #define PRO_MODE        6
 #define NPLAYERS        2
-#define HOR             0
-#define VER             1
+#define I2C(I)           (I + 'A' - 1)
+
+int matr[PRO_MODE+1][PRO_MODE][3] = {0};
+enum {HOR, VER, WIN};
+
+#define SQUARE_COND(row, col)   (matr[row][col][HOR] && matr[row][col][VER] \
+        && matr[row][col+1][VER] && matr[row+1][col][HOR])
+
+int find_square(int direc, int *row, int *col)
+{
+    if (SQUARE_COND(*row, *col))
+        return 1;
+
+    if (direc)
+        if ((*col)-- > 0)
+            return SQUARE_COND(*row, *col);
+
+    if ((*row)-- > 0)
+        return SQUARE_COND(*row, *col);
+}
 
 int main(int argc, char const *argv[])
 {
     /* declaration */
-    int direc, row, col, player = 1,
-        mode = NORMAL_MODE, matr[PRO_MODE+1][PRO_MODE][2] = {0};
+    int direc, row, col, player = 1, mode = NORMAL_MODE;
     char *line;
     size_t sline;
 
@@ -26,15 +43,17 @@ int main(int argc, char const *argv[])
             for (int j = 0; j < mode; j++)
                 printf("*%s", matr[i][j][HOR] ? "--" : "  ");
             putchar('\n');
+
             for (int j = 0; j < mode; j++)
-                printf("%c  ", matr[i][j][VER] ? '|' : ' ');
+                printf("%c%c ", matr[i][j][VER] ? '|' : ' ',
+                                matr[i][j][WIN] ? I2C(matr[i][j][WIN]) : ' ');
             putchar('\n');
         }
 
     retry:
         /* get data */
         line = NULL;
-        printf("Player %c turn.Enter coordinates:\n", 'A' + player - 1);
+        printf("Player %c turn.Enter coordinates:\n", I2C(player));
         getline(&line, &sline, stdin);
         if (feof(stdin))
             return (0);
@@ -53,6 +72,8 @@ int main(int argc, char const *argv[])
         matr[row][col][direc] = player;
 
         /* show score */
+        if (find_square(direc, &row, &col))
+            matr[row][col][WIN] = player;
 
         /* check for continue */
 
