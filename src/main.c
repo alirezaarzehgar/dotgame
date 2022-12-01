@@ -9,6 +9,19 @@
 int matr[PRO_MODE+1][PRO_MODE][3] = {0};
 enum {HOR, VER, WIN};
 
+void print_matrix(int mode) {
+    for (int i = 0; i <= mode; i++) {
+        for (int j = 0; j <= mode; j++)
+            printf("*%s", matr[i][j][HOR] ? "--" : "  ");
+        putchar('\n');
+
+        for (int j = 0; j <= mode; j++)
+            printf("%c%c ", matr[i][j][VER] ? '|' : ' ',
+                            matr[i][j][WIN] ? I2C(matr[i][j][WIN]) : ' ');
+        putchar('\n');
+    }
+}
+
 int is_square(int row, int col)
 {
     return matr[row][col][HOR] && matr[row][col][VER]
@@ -17,8 +30,8 @@ int is_square(int row, int col)
 
 int main(int argc, char const *argv[])
 {
-    int direc, row, col, player = 1, sumscore = 0, wins,
-        mode = NORMAL_MODE - 1, scores[NPLAYERS] = {0};
+    int direc, row, col, wins, retry = 0, player = 1,
+        sumscore = 0, mode = NORMAL_MODE - 1, scores[NPLAYERS] = {0};
     char *line;
     size_t sline;
 
@@ -26,21 +39,12 @@ int main(int argc, char const *argv[])
         mode = PRO_MODE - 1;
 
     for (;;) {
-        for (int i = 0; i <= mode; i++) {
-            for (int j = 0; j <= mode; j++)
-                printf("*%s", matr[i][j][HOR] ? "--" : "  ");
-            putchar('\n');
+        if (!retry)
+            print_matrix(mode);
 
-            for (int j = 0; j <= mode; j++)
-                printf("%c%c ", matr[i][j][VER] ? '|' : ' ',
-                                matr[i][j][WIN] ? I2C(matr[i][j][WIN]) : ' ');
-            putchar('\n');
-        }
+        if (sumscore == mode * mode)
+            break;
 
-    if (sumscore == mode * mode)
-        break;
-
-    retry:
         wins = 0;
         line = NULL;
         printf("Player %c turn.Enter coordinates:\n", I2C(player));
@@ -57,8 +61,10 @@ int main(int argc, char const *argv[])
             || col < 0 || col > mode
             || matr[row][col][direc]) {
             fprintf(stderr, "Invalid input. retry\n");
-            goto retry;
+            retry = 1;
+            continue;
         }
+        retry = 0;
         matr[row][col][direc] = player;
 
         if (is_square(row, col)) {
@@ -86,7 +92,7 @@ int main(int argc, char const *argv[])
     }
 
     for (int i = 0; i < NPLAYERS; i++)
-        printf("score(%c): %d; ", 'A'+i, scores[i]);
+        printf("score(%c): %d; ", 'A' + i, scores[i]);
     putchar('\n');
     return (0);
 }
