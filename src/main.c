@@ -28,7 +28,8 @@ int find_square(int direc, int *row, int *col)
 int main(int argc, char const *argv[])
 {
     /* declaration */
-    int direc, row, col, player = 1, mode = NORMAL_MODE;
+    int direc, row, col, player = 1, sumscore = 0,
+        mode = NORMAL_MODE, scores[NPLAYERS] = {0};
     char *line;
     size_t sline;
 
@@ -49,6 +50,10 @@ int main(int argc, char const *argv[])
                                 matr[i][j][WIN] ? I2C(matr[i][j][WIN]) : ' ');
             putchar('\n');
         }
+
+    /* check for continue */
+    if (sumscore == (mode - 1) * (mode - 1))
+        break;
 
     retry:
         /* get data */
@@ -72,17 +77,20 @@ int main(int argc, char const *argv[])
         matr[row][col][direc] = player;
 
         /* show score */
-        if (find_square(direc, &row, &col))
+        if (find_square(direc, &row, &col)) {
             matr[row][col][WIN] = player;
-
-        /* check for continue */
+            scores[player-1]++;
+            sumscore++;
+            continue;
+        }
 
         /* next player */
         if (++player > NPLAYERS)
             player = 1;
     }
 
-    /* result */
-
+    for (int i = 0; i < NPLAYERS; i++)
+        printf("score(%c): %d; ", 'A'+i, scores[i]);
+    putchar('\n');
     return (0);
 }
