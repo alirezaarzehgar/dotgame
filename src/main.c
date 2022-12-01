@@ -20,11 +20,9 @@ int main(int argc, char const *argv[])
         mode = PRO_MODE;
 
     /* start game */
-    for (;;)
-    {
+    for (;;) {
         /* print matrix */
-        for (int i = 0; i < mode; i++)
-        {
+        for (int i = 0; i < mode; i++) {
             for (int j = 0; j < mode; j++)
                 printf("*%s", matr[i][j][HOR] ? "--" : "  ");
             putchar('\n');
@@ -48,8 +46,7 @@ int main(int argc, char const *argv[])
             || (direc && row >= mode - 1)
             || (!direc && col >= mode - 1)
             || row < 0 || col < 0
-            || matr[row][col][direc])
-        {
+            || matr[row][col][direc]) {
             fprintf(stderr, "Invalid input. retry\n");
             goto retry;
         }
