@@ -8,12 +8,13 @@
 #define NPLAYERS        2
 #define HOR             0
 #define VER             1
+#define WIN             -1
 
 int main(int argc, char const *argv[])
 {
     /* declaration */
     int direction, row, col, *point, player = 1,
-        mode = NORMAL_MODE, matr[PRO_MODE+1][PRO_MODE+1][2];
+        mode = NORMAL_MODE, matr[PRO_MODE+1][PRO_MODE][2];
     char *line;
     size_t sline;
 
