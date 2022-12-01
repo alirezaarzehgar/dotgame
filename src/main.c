@@ -29,30 +29,30 @@ int main(int argc, char const *argv[])
 {
     /* declaration */
     int direc, row, col, player = 1, sumscore = 0,
-        mode = NORMAL_MODE, scores[NPLAYERS] = {0};
+        mode = NORMAL_MODE - 1, scores[NPLAYERS] = {0};
     char *line;
     size_t sline;
 
     /* parse arguments */
     if (argc == 2 && !strncmp("pro", argv[1], 4))
-        mode = PRO_MODE;
+        mode = PRO_MODE - 1;
 
     /* start game */
     for (;;) {
         /* print matrix */
-        for (int i = 0; i < mode; i++) {
-            for (int j = 0; j < mode; j++)
+        for (int i = 0; i <= mode; i++) {
+            for (int j = 0; j <= mode; j++)
                 printf("*%s", matr[i][j][HOR] ? "--" : "  ");
             putchar('\n');
 
-            for (int j = 0; j < mode; j++)
+            for (int j = 0; j <= mode; j++)
                 printf("%c%c ", matr[i][j][VER] ? '|' : ' ',
                                 matr[i][j][WIN] ? I2C(matr[i][j][WIN]) : ' ');
             putchar('\n');
         }
 
     /* check for continue */
-    if (sumscore == (mode - 1) * (mode - 1))
+    if (sumscore == mode * mode)
         break;
 
     retry:
@@ -67,9 +67,10 @@ int main(int argc, char const *argv[])
         /* input validation */
         row--, col--;
         if (!(direc == 0 || direc == 1)
-            || (direc && row >= mode - 1)
-            || (!direc && col >= mode - 1)
-            || row < 0 || col < 0
+            || (direc && row >= mode)
+            || (!direc && col >= mode)
+            || row < 0 || row > mode
+            || col < 0 || col > mode
             || matr[row][col][direc]) {
             fprintf(stderr, "Invalid input. retry\n");
             goto retry;
