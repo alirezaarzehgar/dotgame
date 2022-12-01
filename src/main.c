@@ -25,12 +25,9 @@ int main(int argc, char const *argv[])
         /* print matrix */
         for (int i = 0; i < mode; i++)
         {
-            /* print dots */
             for (int j = 0; j < mode; j++)
                 printf("*%s", matr[i][j][HOR] ? "--" : "  ");
             putchar('\n');
-
-            /* print horizental lines */
             for (int j = 0; j < mode; j++)
                 printf("%c  ", matr[i][j][VER] ? '|' : ' ');
             putchar('\n');
