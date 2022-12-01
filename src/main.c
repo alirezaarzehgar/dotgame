@@ -13,7 +13,7 @@
 int main(int argc, char const *argv[])
 {
     /* declaration */
-    int direction, row, col, *point, player = 1,
+    int direc, row, col, player = 1,
         mode = NORMAL_MODE, matr[PRO_MODE+1][PRO_MODE][2];
     char *line;
     size_t sline;
@@ -33,12 +33,12 @@ int main(int argc, char const *argv[])
         {
             /* print dots */
             for (int j = 0; j < mode; j++)
-                printf("*%s", matr[i][j+1][HOR] ? "--" : "  ");
+                printf("*%s", matr[i][j][HOR] ? "--" : "  ");
             putchar('\n');
 
             /* print horizental lines */
             for (int j = 0; j < mode; j++)
-                printf("%c  ", matr[i+1][j][VER] ? '|' : ' ');
+                printf("%c  ", matr[i][j][VER] ? '|' : ' ');
             putchar('\n');
         }
 
@@ -49,21 +49,20 @@ int main(int argc, char const *argv[])
         getline(&line, &sline, stdin);
         if (feof(stdin))
             _exit(EXIT_SUCCESS);
-        sscanf(line, "%d%d%d", &direction, &row, &col);
+        sscanf(line, "%d%d%d", &direc, &row, &col);
 
         /* input validation */
         row--, col--;
-        point = direction ? matr[row+1][col] : matr[row][col+1];
-        if (!(direction == 0 || direction == 1)
-            || (direction && row >= mode - 1)
-            || (!direction && col >= mode - 1)
+        if (!(direc == 0 || direc == 1)
+            || (direc && row >= mode - 1)
+            || (!direc && col >= mode - 1)
             || row < 0 || col < 0
-            || point[direction])
+            || matr[row][col][direc])
         {
             fprintf(stderr, "Invalid input. retry\n");
             goto retry;
         }
-        point[direction] = player;
+        matr[row][col][direc] = player;
 
         /* show score */
 
