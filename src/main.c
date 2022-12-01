@@ -6,22 +6,18 @@
 #define NPLAYERS        2
 #define HOR             0
 #define VER             1
-#define WIN             -1
 
 int main(int argc, char const *argv[])
 {
     /* declaration */
     int direc, row, col, player = 1,
-        mode = NORMAL_MODE, matr[PRO_MODE+1][PRO_MODE][2];
+        mode = NORMAL_MODE, matr[PRO_MODE+1][PRO_MODE][2] = {0};
     char *line;
     size_t sline;
 
     /* parse arguments */
     if (argc == 2 && !strncmp("pro", argv[1], 4))
         mode = PRO_MODE;
-
-    /* initialization */
-    bzero(matr, sizeof(matr));
 
     /* start game */
     for (;;)
