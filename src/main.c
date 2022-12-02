@@ -31,6 +31,26 @@ int is_square(int row, int col)
             && matr[row][col+1][VER] && matr[row+1][col][HOR];
 }
 
+int is_valid_input(int mode, int direc, int row, int col)
+{
+    if (direc != HOR && direc != VER)
+        return 0;
+    /* row in vertical lines is in 1..3 range */
+    if (direc && row >= mode)
+        return 0;
+    /* col in horizontal lines is in 1..3 range */
+    if (!direc && col >= mode)
+        return 0;
+    if (row < 0 || row > mode)
+        return 0;
+    if (col < 0 || col > mode)
+        return 0;
+    /* non-zero lines are in use */
+    if (matr[row][col][direc])
+        return 0;
+    return 1;
+}
+
 int seeded_random(int max)
 {
     struct timespec ts;
@@ -67,18 +87,13 @@ int main(int argc, char const *argv[])
             line = NULL;
             printf("Player %c turn.Enter coordinates:\n", I2C(player));
             getline(&line, &sline, stdin);
+            sscanf(line, "%d%d%d", &direc, &row, &col);
             if (feof(stdin))
                 return (0);
-            sscanf(line, "%d%d%d", &direc, &row, &col);
         }
 
         row--, col--;
-        if (!(direc == 0 || direc == 1)
-            || (direc && row >= mode)
-            || (!direc && col >= mode)
-            || row < 0 || row > mode
-            || col < 0 || col > mode
-            || matr[row][col][direc]) {
+        if (!is_valid_input(mode, direc, row, col)) {
             if (player != faker)
                 fprintf(stderr, "Invalid input. retry\n");
             retry = 1;
