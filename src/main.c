@@ -30,13 +30,16 @@ int is_square(int row, int col)
 
 int main(int argc, char const *argv[])
 {
-    int direc, row, col, wins, retry = 0, player = 1,
+    int direc, row, col, wins, retry = 0, player = 1, faker = 0,
         sumscore = 0, mode = NORMAL_MODE - 1, scores[NPLAYERS] = {0};
     char *line;
     size_t sline;
 
-    if (argc == 2 && !strncmp("pro", argv[1], 4))
+    if (argc >= 2 && !strncmp("pro", argv[1], 4))
         mode = PRO_MODE - 1;
+
+    if (argc >= 3 && !strncmp("fake", argv[2], 4))
+        faker = 1;
 
     for (;;) {
         if (!retry)
