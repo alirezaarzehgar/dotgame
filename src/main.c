@@ -53,7 +53,7 @@ int main(int argc, char const *argv[])
         faker = 1;
 
     for (;;) {
-        if (!retry && player == faker)
+        if (!retry && player != faker)
             print_matrix(mode);
 
         if (sumscore == mode * mode)
