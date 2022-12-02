@@ -27,8 +27,9 @@ void print_matrix(int mode) {
 
 int is_square(int row, int col)
 {
-    return matr[row][col][HOR] && matr[row][col][VER]
-            && matr[row][col+1][VER] && matr[row+1][col][HOR];
+    return matr[row][col][HOR] && matr[row][col][VER]   /* current point */
+            && matr[row][col+1][VER]    /* right point */
+            && matr[row+1][col][HOR];   /* down point */
 }
 
 int is_valid_input(int mode, int direc, int row, int col)
