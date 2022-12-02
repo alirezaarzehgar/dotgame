@@ -1,5 +1,8 @@
+#include <time.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
+#include <unistd.h>
 
 #define NORMAL_MODE     4
 #define PRO_MODE        6
@@ -28,15 +31,26 @@ int is_square(int row, int col)
             && matr[row][col+1][VER] && matr[row+1][col][HOR];
 }
 
+int seeded_random(int max)
+{
+    struct timespec ts;
+    timespec_get(&ts, TIME_UTC);
+    srand(ts.tv_nsec + rand());
+    return rand() % max;
+}
+
 int main(int argc, char const *argv[])
 {
-    int direc, row, col, wins, retry = 0, player = 1,
+    int direc, row, col, wins, retry = 0, player = 1, faker = 0,
         sumscore = 0, mode = NORMAL_MODE - 1, scores[NPLAYERS] = {0};
     char *line;
     size_t sline;
 
-    if (argc == 2 && !strncmp("pro", argv[1], 4))
+    if (argc >= 2 && !strncmp("pro", argv[1], 4))
         mode = PRO_MODE - 1;
+
+    if (argc >= 3 && !strncmp("fake", argv[2], 4))
+        faker = 1;
 
     for (;;) {
         if (!retry)
@@ -45,13 +59,18 @@ int main(int argc, char const *argv[])
         if (sumscore == mode * mode)
             break;
 
-        wins = 0;
-        line = NULL;
-        printf("Player %c turn.Enter coordinates:\n", I2C(player));
-        getline(&line, &sline, stdin);
-        if (feof(stdin))
-            return (0);
-        sscanf(line, "%d%d%d", &direc, &row, &col);
+        if (player == faker) {
+            direc = seeded_random(2);
+            row = seeded_random(mode + 2);
+            col = seeded_random(mode + 2);
+        } else {
+            line = NULL;
+            printf("Player %c turn.Enter coordinates:\n", I2C(player));
+            getline(&line, &sline, stdin);
+            if (feof(stdin))
+                return (0);
+            sscanf(line, "%d%d%d", &direc, &row, &col);
+        }
 
         row--, col--;
         if (!(direc == 0 || direc == 1)
@@ -60,13 +79,15 @@ int main(int argc, char const *argv[])
             || row < 0 || row > mode
             || col < 0 || col > mode
             || matr[row][col][direc]) {
-            fprintf(stderr, "Invalid input. retry\n");
+            if (player != faker)
+                fprintf(stderr, "Invalid input. retry\n");
             retry = 1;
             continue;
         }
         retry = 0;
         matr[row][col][direc] = player;
 
+        wins = 0;
         if (is_square(row, col)) {
             matr[row][col][WIN] = player;
             wins++;
