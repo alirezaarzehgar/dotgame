@@ -29,7 +29,8 @@ int is_square(int row, int col)
 {
     return matr[row][col][HOR] && matr[row][col][VER]   /* current point */
             && matr[row][col+1][VER]    /* right point */
-            && matr[row+1][col][HOR];   /* down point */
+            && matr[row+1][col][HOR]    /* down point */
+            && matr[row][col][WIN];
 }
 
 int is_invalid_input(int mode, int direc, int row, int col)
@@ -99,14 +100,12 @@ int main(int argc, char const *argv[])
             wins++;
         }
         if (direc) {
-            if (col-- >= 0 && !matr[row][col][WIN]
-                && is_square(row, col)) {
+            if (col-- >= 0 && is_square(row, col)) {
                 matr[row][col][WIN] = player;
                 wins++;
             }
         } else {
-            if (row-- >= 0 && !matr[row][col][WIN]
-                && is_square(row, col)) {
+            if (row-- >= 0 && is_square(row, col)) {
                 matr[row][col][WIN] = player;
                 wins++;
             }
