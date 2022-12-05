@@ -7,7 +7,7 @@
 #define NORMAL_MODE     4
 #define PRO_MODE        6
 #define NPLAYERS        2
-#define I2C(I)           (I + 'A' - 1)
+#define I2C(I)          (I + 'A' - 1)
 
 int matr[PRO_MODE+1][PRO_MODE][3] = {0};
 enum {HOR, VER, WIN};
