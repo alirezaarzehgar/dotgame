@@ -32,24 +32,14 @@ int is_square(int row, int col)
             && matr[row+1][col][HOR];   /* down point */
 }
 
-int is_valid_input(int mode, int direc, int row, int col)
+int is_invalid_input(int mode, int direc, int row, int col)
 {
-    if (direc != HOR && direc != VER)
-        return 0;
-    /* row in vertical lines is in 1..(n-1) range */
-    if (direc && row >= mode)
-        return 0;
-    /* col in horizontal lines is in 1..(n-1) range */
-    if (!direc && col >= mode)
-        return 0;
-    if (row < 0 || row > mode)
-        return 0;
-    if (col < 0 || col > mode)
-        return 0;
-    /* non-zero lines are in use */
-    if (matr[row][col][direc])
-        return 0;
-    return 1;
+    return (direc != HOR && direc != VER)
+            || (direc == VER && row > mode-1)
+            || (direc == HOR && col > mode-1)
+            || (row < 0 || row > mode)
+            || (col < 0 || col > mode)
+            || matr[row][col][direc] > 0;
 }
 
 int seeded_random(int max)
@@ -94,7 +84,7 @@ int main(int argc, char const *argv[])
         }
 
         row--, col--;
-        if (!is_valid_input(mode, direc, row, col)) {
+        if (is_invalid_input(mode, direc, row, col)) {
             if (player != faker)
                 fprintf(stderr, "Invalid input. retry\n");
             retry = 1;
