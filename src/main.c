@@ -36,10 +36,10 @@ int is_valid_input(int mode, int direc, int row, int col)
 {
     if (direc != HOR && direc != VER)
         return 0;
-    /* row in vertical lines is in 1..3 range */
+    /* row in vertical lines is in 1..(n-1) range */
     if (direc && row >= mode)
         return 0;
-    /* col in horizontal lines is in 1..3 range */
+    /* col in horizontal lines is in 1..(n-1) range */
     if (!direc && col >= mode)
         return 0;
     if (row < 0 || row > mode)
