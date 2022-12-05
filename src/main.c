@@ -13,14 +13,14 @@ int matr[PRO_MODE][PRO_MODE][3] = {0};
 enum {HOR, VER, WIN};
 
 void print_matrix(int mode) {
-    for (int i = 0; i <= mode; i++) {
-        for (int j = 0; j <= mode; j++)
-            printf("*%s", matr[i][j][HOR] ? "--" : "  ");
+    for (int row = 0; row <= mode; row++) {
+        for (int col = 0; col <= mode; col++)
+            printf("*%s", matr[row][col][HOR] ? "--" : "  ");
         putchar('\n');
 
-        for (int j = 0; j <= mode; j++)
-            printf("%c%c ", matr[i][j][VER] ? '|' : ' ',
-                            matr[i][j][WIN] ? I2C(matr[i][j][WIN]) : ' ');
+        for (int col = 0; col <= mode; col++)
+            printf("%c%c ", matr[row][col][VER] ? '|' : ' ',
+                            matr[row][col][WIN] ? I2C(matr[row][col][WIN]) : ' ');
         putchar('\n');
     }
 }
@@ -128,8 +128,8 @@ int main(int argc, char const *argv[])
             player = 1;
     }
 
-    for (int i = 0; i < NPLAYERS; i++)
-        printf("score(%c): %d; ", 'A' + i, scores[i]);
+    for (int id = 0; id < NPLAYERS; id++)
+        printf("score(%c): %d; ", 'A' + id, scores[id]);
     putchar('\n');
     return (0);
 }
