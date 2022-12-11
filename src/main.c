@@ -12,15 +12,29 @@
 int matr[PRO_MODE][PRO_MODE][3] = {0};
 enum {HOR, VER, WIN};
 
+char *colored(char *msg, int id)
+{
+    /* Max lenght for colored double dash or pipe */
+    static char text[20];
+    sprintf(text, "\033[%dm%s\033[0m", 30 + id, msg);
+    return text;
+}
+
 void print_matrix(int mode) {
+    char *line, *name;
+
     for (int row = 0; row <= mode; row++) {
-        for (int col = 0; col <= mode; col++)
-            printf("*%s", matr[row][col][HOR] ? "--" : "  ");
+        for (int col = 0; col <= mode; col++) {
+            line = colored("--", matr[row][col][HOR]);
+            printf("*%s", matr[row][col][HOR] ? line : "  ");
+        }
         putchar('\n');
 
-        for (int col = 0; col <= mode; col++)
-            printf("%c%c ", matr[row][col][VER] ? '|' : ' ',
+        for (int col = 0; col <= mode; col++) {
+            line = colored("|", matr[row][col][VER]);
+            printf("%s%c ", matr[row][col][VER] ? line : " ",
                             matr[row][col][WIN] ? I2C(matr[row][col][WIN]) : ' ');
+        }
         putchar('\n');
     }
 }
