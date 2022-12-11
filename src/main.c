@@ -51,6 +51,56 @@ int seeded_random(int max)
     return rand() % max;
 }
 
+int check_sides(int row, int col,
+                    int *orow, int *ocol, int *odirec)
+{
+    int side = 0;
+
+    *orow = row;
+    *ocol = col;
+
+    if (matr[row][col][HOR])
+        side++;
+    else
+        *odirec = HOR;
+
+    if (matr[row][col][VER])
+        side++;
+    else
+        *odirec = VER;
+
+    if (matr[row][col + 1][VER]) {
+        side++;
+    } else {
+        *ocol = col + 1;
+        *odirec = VER;
+    }
+
+    if (matr[row + 1][col][HOR]) {
+        side++;
+    } else {
+        *orow = row + 1;
+        *odirec = HOR;
+    }
+
+    (*orow)++, (*ocol)++;
+    return side;
+}
+
+void fake_player(int mode, int *odirec, int *orow, int *ocol)
+{
+    for (int row = 0; row < mode; row++) {
+        for (int col = 0; col < mode; col++) {
+            if (check_sides(row, col, orow, ocol, odirec) == 3)
+                return;
+        }
+    }
+
+    *odirec = seeded_random(2);
+    *orow = seeded_random(mode + 2);
+    *ocol = seeded_random(mode + 2);
+}
+
 int main(int argc, char const *argv[])
 {
     int direc, row, col, wins, retry = 0, player = 1, faker = 0,
@@ -72,9 +122,7 @@ int main(int argc, char const *argv[])
             break;
 
         if (player == faker) {
-            direc = seeded_random(2);
-            row = seeded_random(mode + 2);
-            col = seeded_random(mode + 2);
+            fake_player(mode, &direc, &row, &col);
         } else {
             line = NULL;
             printf("Player %c turn.Enter coordinates:\n", I2C(player));
