@@ -30,7 +30,7 @@ int is_square(int row, int col)
     return matr[row][col][HOR] && matr[row][col][VER]   /* current point */
             && matr[row][col+1][VER]    /* right point */
             && matr[row+1][col][HOR]    /* down point */
-            && matr[row][col][WIN];
+            && !matr[row][col][WIN];
 }
 
 int is_invalid_input(int mode, int direc, int row, int col)
