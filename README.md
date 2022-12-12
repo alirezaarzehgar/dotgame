@@ -13,6 +13,16 @@ Most features of this code:
 
 An small project such this should replace to gist. But I want to improve it sometimes on a day of week. This game should be featureful and interesting! Even we can add this game to OpenBSD games XD
 
+# Requirements
+ - BSD Make
+
+# Installation
+```
+cd dotgame
+bmake
+./dotgame -h
+```
+
 # How to start game ?
 When I was student in some classes of school we didn't listen to teacher and play a fun game. In Iran this game known as نقطه بازی and I say dot game.
 
