@@ -1,6 +1,6 @@
 # Dot Game
 
-This game is a fun game that I pick for pastime. It's challenge could be enjoyable and fun!
+This game is a fun game that I pick for pastime. It's a challenge that could be enjoyable and fun!
 
 Most features of this code:
 
@@ -14,9 +14,9 @@ Most features of this code:
 An small project such this should replace to gist. But I want to improve it sometimes on a day of week. This game should be featureful and interesting! Even we can add this game to OpenBSD games XD
 
 # How to start game ?
-When I was student in some classes of school we don't listen to teacher and play a fun game. In Iran this game known as نقطه بازی and I say dot game.
+When I was student in some classes of school we didn't listen to teacher and play a fun game. In Iran this game known as نقطه بازی and I say dot game.
 
-In this game users should draw some lines between points. Some who created a square with lines can own this square and it's ID will place on square. Winner will get a gift and enter new coordination while he is winner.
+In this game users should draw some lines between points. First one who creat a square with lines can own this square and it's ID will place on square. Winner will get a gift and enter new coordination while he is winner.
 
 ## Sample output:
 ```
@@ -36,9 +36,9 @@ score(A): 4; score(B): 21;
 ```
 
 ## Game modes
-This game have normal and profesional mode based on lenght of 2D array. On normal mode game board should a `4*4` board and on profesional mode board should be `6*6`.
+This game have normal and profesional mode based on lenght of 2D array. On normal mode game board should have `4*4` board and on profesional mode board should be `6*6`.
 
-Other mode of this game is faker mode. With enabling this feature B player will be fake and random.
+Other mode of this game is faker mode. When you enabling this feature, player B will be fake and random.
 
 ## Arguments
 ```
