@@ -3,6 +3,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <getopt.h>
 
 #define NORMAL_MODE     4
 #define PRO_MODE        6
@@ -115,18 +116,32 @@ void fake_player(int mode, int *odirec, int *orow, int *ocol)
     *ocol = seeded_random(mode + 2);
 }
 
-int main(int argc, char const *argv[])
+int main(int argc, char *const *argv)
 {
-    int direc, row, col, wins, retry = 0, player = 1, faker = 0,
+    int direc, row, col, wins, retry = 0, player = 1, faker = 0, opt,
         sumscore = 0, mode = NORMAL_MODE - 1, scores[NPLAYERS] = {0};
     char *line;
     size_t sline;
 
-    if (argc >= 2 && !strncmp("pro", argv[1], 4))
-        mode = PRO_MODE - 1;
+    while ((opt = getopt(argc, argv, "pf")) != -1)
+    {
+        switch (opt)
+        {
+        case 'p':
+            mode = PRO_MODE - 1;
+            break;
 
-    if (argc >= 3 && !strncmp("fake", argv[2], 4))
-        faker = 1;
+        case 'f':
+            faker = 1;
+            break;
+
+        case '?':
+            fprintf(stderr, "Usage: %s\n"
+            "  -p\t\tEnable professional mode\n"
+            "  -f\t\tEnable fake player\n", argv[0]);
+            return -1;
+        }
+    }
 
     for (;;) {
         if (!retry && player != faker)
@@ -182,5 +197,5 @@ int main(int argc, char const *argv[])
     for (int id = 0; id < NPLAYERS; id++)
         printf("score(%c): %d; ", 'A' + id, scores[id]);
     putchar('\n');
-    return (0);
+    return 0;
 }
