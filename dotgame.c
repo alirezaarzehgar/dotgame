@@ -17,7 +17,7 @@ char *colored(char *msg, int id)
 {
     /* Max lenght for colored double dash or pipe */
     static char text[20];
-    sprintf(text, "\033[%dm%s\033[0m", 30 + id, msg);
+    snprintf(text, 20, "\033[%dm%s\033[0m", 30 + id, msg);
     return text;
 }
 
