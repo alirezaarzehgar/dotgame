@@ -22,7 +22,7 @@ char *colored(char *msg, int id)
 }
 
 void print_matrix(int mode) {
-    char *line, *name;
+    char *line;
 
     for (int row = 0; row <= mode; row++) {
         for (int col = 0; col <= mode; col++) {
