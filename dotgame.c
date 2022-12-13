@@ -1,3 +1,4 @@
+#include <err.h>
 #include <time.h>
 #include <stdio.h>
 #include <string.h>
@@ -122,6 +123,11 @@ int main(int argc, char *const *argv)
         sumscore = 0, mode = NORMAL_MODE - 1, scores[NPLAYERS] = {0};
     char *line;
     size_t sline;
+
+#ifdef __OpenBSD__
+    if (pledge("stdio", NULL) == -1)
+        err(1, "pledge");
+#endif
 
     while ((opt = getopt(argc, argv, "pf")) != -1)
     {
