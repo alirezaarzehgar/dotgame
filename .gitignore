@@ -1,2 +1,5 @@
 dotgame
-src/*.o
+*.o
+*.d
+*.cat6
+.depend
