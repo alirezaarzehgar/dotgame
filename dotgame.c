@@ -59,14 +59,6 @@ int is_invalid_input(int mode, int direc, int row, int col)
             || matr[row][col][direc] > 0;
 }
 
-int seeded_random(int max)
-{
-    struct timespec ts;
-    timespec_get(&ts, TIME_UTC);
-    srand(ts.tv_nsec + rand());
-    return rand() % max;
-}
-
 int check_sides(int row, int col,
                     int *orow, int *ocol, int *odirec)
 {
@@ -112,9 +104,9 @@ void fake_player(int mode, int *odirec, int *orow, int *ocol)
         }
     }
 
-    *odirec = seeded_random(2);
-    *orow = seeded_random(mode + 2);
-    *ocol = seeded_random(mode + 2);
+    *odirec = rand() % 2;
+    *orow = ((rand() % (mode + 1)) + 1);
+    *ocol = ((rand() % (mode + 1)) + 1);
 }
 
 int main(int argc, char *const *argv)
@@ -123,6 +115,8 @@ int main(int argc, char *const *argv)
         sumscore = 0, mode = NORMAL_MODE - 1, scores[NPLAYERS] = {0};
     char *line;
     size_t sline;
+
+    srand(time(NULL));
 
 #ifdef __OpenBSD__
     if (pledge("stdio", NULL) == -1)
@@ -150,11 +144,13 @@ int main(int argc, char *const *argv)
     }
 
     for (;;) {
+        if (sumscore == mode * mode) {
+            print_matrix(mode);
+            break;
+        }
+
         if (!retry && player != faker)
             print_matrix(mode);
-
-        if (sumscore == mode * mode)
-            break;
 
         if (player == faker) {
             fake_player(mode, &direc, &row, &col);
